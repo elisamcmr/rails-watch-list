@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 sticky-top">
+  <div class="container-fluid">
+    <h2 class="navbar-brand mb-0">ReelMates</h2>
+    <div>
+      <%= link_to "My lists", lists_path, class: "btn shadow-sm rounded-pill px-4", style: "background-color: #FF385C; color: white;" %>
+      <%= link_to "Add a new list", new_list_path, class: "btn shadow-sm rounded-pill px-4", style: "background-color: #FF385C; color: white;" %>
+    </div>
+  </div>
+</nav>
+
+<div class="banner mb-4" style="height: 300px; background-image: url(''); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; color: black; text-align: center;">
+  <h1><%= @list.name %></h1>
+</div>
+
+<div class="d-flex justify-content-end me-3">
+<%= link_to "Add a bookmark", new_list_bookmark_path(@list), class: "btn shadow-sm rounded-pill px-4", style: "background-color: #FF385C; color: white;" %>
+</div>
+
+<div class="row mt-4 mx-2">
+  <% @movies.each do |movie| %>
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card shadow-sm" style="border-radius: 15px; overflow: hidden;">
+
+        <div class="card-img-top" style="height: 300px; background-image: url('<%= movie.poster_url %>'); background-size: cover; background-position: center;">
+        <%= link_to "Delete bookmark", bookmark_path(@list.bookmarks.find_by(movie: movie)), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+          <div class="d-flex align-items-center justify-content-center h-100" style="background-color: rgba(0, 0, 0, 0.5);">
+            <h3 class="card-title text-white text-center" style="font-size: 1.5rem;"><%= movie.title %></h3>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <p class="card-text mb-2"><%= movie.overview %></p>
+          <div class="d-flex justify-content-between">
+          <p> <%= @list.bookmarks.find_by(movie: movie).comment %></p>
+          <p class="card-text"><strong>Rating:</strong> <%= movie.rating %>/10</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
