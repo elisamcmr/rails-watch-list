@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 sticky-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
   <div class="container-fluid">
     <h2 class="navbar-brand mb-0">ReelMates</h2>
     <div>
@@ -8,33 +8,45 @@
   </div>
 </nav>
 
-<div class="banner mb-4" style="height: 300px; background-image: url(''); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; color: black; text-align: center;">
+<div class="banner mb-4" style="height: 400px; background-image: url('<%= asset_path("felix-mooneeram-evlkOfkQ5rE-unsplash.jpg") %>'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; color: white; text-align: center;">
   <h1><%= @list.name %></h1>
 </div>
 
 <div class="d-flex justify-content-end me-3">
-<%= link_to "Add a bookmark", new_list_bookmark_path(@list), class: "btn shadow-sm rounded-pill px-4", style: "background-color: #FF385C; color: white;" %>
+  <%= link_to "Add a bookmark", new_list_bookmark_path(@list), class: "btn shadow-sm rounded-pill px-4", style: "background-color: white; color: #FF385C; border: 2px solid #FF385C;" %>
 </div>
 
 <div class="row mt-4 mx-2">
   <% @movies.each do |movie| %>
-    <div class="col-md-6 col-lg-4 mb-4">
+    <div class="col-md-6 col-lg-4 mb-4 position-relative">
       <div class="card shadow-sm" style="border-radius: 15px; overflow: hidden;">
 
+        <% bookmark = @list.bookmarks.find_by(movie: movie) %>
+        <%= link_to "x",
+        bookmark_path(@list.bookmarks.find_by(movie: movie)),
+        method: :delete, data: { confirm: "Are you sure?" },
+        class: "position-absolute text-secondary",
+        style: "top: 8px; right: 24px; font-size: 32px; text-decoration: none;" %>
+
         <div class="card-img-top" style="height: 300px; background-image: url('<%= movie.poster_url %>'); background-size: cover; background-position: center;">
-        <%= link_to "Delete bookmark", bookmark_path(@list.bookmarks.find_by(movie: movie)), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
           <div class="d-flex align-items-center justify-content-center h-100" style="background-color: rgba(0, 0, 0, 0.5);">
             <h3 class="card-title text-white text-center" style="font-size: 1.5rem;"><%= movie.title %></h3>
           </div>
         </div>
 
         <div class="card-body">
-          <p class="card-text mb-2"><%= movie.overview %></p>
-          <div class="d-flex justify-content-between">
-          <p> <%= @list.bookmarks.find_by(movie: movie).comment %></p>
-          <p class="card-text"><strong>Rating:</strong> <%= movie.rating %>/10</p>
+          <p class="card-text mb-2"><%= truncate(movie.overview, length: 200) %></p>
+          <div class="d-flex justify-content-between align-items-center">
+            <p class="card-text"><strong>Rating:</strong> <%= movie.rating %> ⭐</p>
           </div>
         </div>
+      </div>
+
+      <!-- Floating comment bubble attached to the bottom of the card -->
+      <div class="position-absolute p-2" style="bottom: -8px; right: -4px; background-color: #FFC0CB; border: 1px solid #ddd; border-radius: 10px; z-index: 1; max-width: 80%;">
+        <i class="fa-solid fa-quote-left"></i>
+        <%= bookmark.comment %>
+        <i class="fa-solid fa-quote-right"></i>
       </div>
     </div>
   <% end %>
