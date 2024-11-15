@@ -6,6 +6,7 @@ class ListsController < ApplicationController
   def show
     @list = List.find(params[:id])
     @movies = @list.movies
+    @review = Review.new
   end
 
   def new

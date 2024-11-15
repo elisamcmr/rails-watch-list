@@ -16,7 +16,7 @@
   <%= link_to "Add a bookmark", new_list_bookmark_path(@list), class: "btn shadow-sm rounded-pill px-4", style: "background-color: white; color: #FF385C; border: 2px solid #FF385C;" %>
 </div>
 
-<div class="row mt-4 mx-2">
+<div class="row mt-4 mx-2 border-bottom border-2">
   <% @movies.each do |movie| %>
     <div class="col-md-6 col-lg-4 mb-4 position-relative">
       <div class="card shadow-sm" style="border-radius: 15px; overflow: hidden;">
@@ -42,7 +42,6 @@
         </div>
       </div>
 
-      <!-- Floating comment bubble attached to the bottom of the card -->
       <div class="position-absolute p-2" style="bottom: -8px; right: -4px; background-color: #FFC0CB; border: 1px solid #ddd; border-radius: 10px; z-index: 1; max-width: 80%;">
         <i class="fa-solid fa-quote-left"></i>
         <%= bookmark.comment %>
@@ -50,4 +49,53 @@
       </div>
     </div>
   <% end %>
+</div>
+
+<div class="container my-5">
+  <div class="row">
+    <!-- Reviews Section -->
+    <div class="col-md-7">
+      <h3>Reviews</h3>
+      <% if @list.reviews.any? %>
+        <div class="list-group mb-4">
+          <% @list.reviews.each do |review| %>
+            <div class="list-group-item shadow-sm mb-3" style="border-radius: 10px;">
+              <p><%= review.content %></p>
+              <div class="mb-2">
+                <% review.rating.times do %>
+                  <i class="fa-solid fa-star text-warning"></i>
+                <% end %>
+                <% (5 - review.rating).times do %>
+                  <i class="fa-regular fa-star text-secondary"></i>
+                <% end %>
+              </div>
+              <small class="text-muted">Posted on <%= review.created_at.strftime("%B %d, %Y at %I:%M %p") %></small>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p>No reviews yet.</p>
+      <% end %>
+    </div>
+
+    <!-- Add Review Form -->
+    <div class="col-md-5">
+      <div class="card shadow-sm p-4">
+        <h2>Add a Review</h2>
+        <%= simple_form_for([@list, @review]) do |f| %>
+          <div class="mb-3">
+            <%= f.input :content, label: 'Your Review', input_html: { class: 'form-control shadow-sm rounded' } %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.input :rating, as: :radio_buttons, collection: 1..5, label: 'Rating', item_wrapper_class: 'form-check-inline', input_html: { class: 'form-check-input' } %>
+          </div>
+
+          <div class="d-flex justify-content-end mt-4">
+            <%= f.submit 'Add Review', class: 'btn shadow-sm rounded-pill px-4', style: 'background-color: #FF385C; color: white;' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
