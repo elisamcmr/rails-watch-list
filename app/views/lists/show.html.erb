@@ -22,11 +22,8 @@
       <div class="card shadow-sm" style="border-radius: 15px; overflow: hidden;">
 
         <% bookmark = @list.bookmarks.find_by(movie: movie) %>
-        <%= link_to "x",
-        bookmark_path(@list.bookmarks.find_by(movie: movie)),
-        method: :delete, data: { confirm: "Are you sure?" },
-        class: "position-absolute text-secondary",
-        style: "top: 8px; right: 24px; font-size: 32px; text-decoration: none;" %>
+          <%= link_to "x", bookmark_path(bookmark), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "position-absolute text-secondary", style: "top: 8px; right: 24px; font-size: 32px; text-decoration: none;" %>
+
 
         <div class="card-img-top" style="height: 300px; background-image: url('<%= movie.poster_url %>'); background-size: cover; background-position: center;">
           <div class="d-flex align-items-center justify-content-center h-100" style="background-color: rgba(0, 0, 0, 0.5);">
@@ -53,7 +50,7 @@
 
 <div class="container my-5">
   <div class="row">
-    <!-- Reviews Section -->
+
     <div class="col-md-7">
       <h3>Reviews</h3>
       <% if @list.reviews.any? %>
@@ -78,7 +75,7 @@
       <% end %>
     </div>
 
-    <!-- Add Review Form -->
+
     <div class="col-md-5">
       <div class="card shadow-sm p-4">
         <h2>Add a Review</h2>
