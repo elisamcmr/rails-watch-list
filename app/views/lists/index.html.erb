@@ -15,9 +15,11 @@
   <% @lists.each do |list| %>
     <div class="col-md-6 col-lg-4 mb-4">
       <%= link_to list_path(list), style: "text-decoration: none; color: inherit;" do %>
-        <div class="card shadow-sm" style="height: 300px; background-image: url('<%=  %>'); background-size: cover; background-position: center; border: none; border-radius: 15px;">
-          <div class="card-body d-flex align-items-center justify-content-center text-white" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
-            <h3 class="card-title"><%= list.name %></h3>
+        <div class="card shadow-sm" style="height: 300px; border: none; border-radius: 15px; overflow: hidden;">
+          <div style="height: 100%; background-image: url('<%= list.photo.attached? ? url_for(list.photo) : asset_path("placeholder.jpg") %>'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center;">
+            <div class="card-body text-white" style="background-color: rgba(0, 0, 0, 0.5); width: 100%; text-align: center;">
+              <h3 class="card-title mb-0"><%= list.name %></h3>
+            </div>
           </div>
         </div>
       <% end %>

@@ -32,3 +32,32 @@ movies['results'].each do |movie_data|
 end
 
 puts "#{Movie.count} movies created"
+
+puts "Clearing existing lists..."
+List.destroy_all
+
+puts "Creating new lists with images from Cloudinary..."
+
+lists = [
+  { name: "Classics", image_url: "https://res.cloudinary.com/dtfkb3szp/image/upload/v1731837759/classics_mewstq.avif" },
+  { name: "Family", image_url: "https://res.cloudinary.com/dtfkb3szp/image/upload/v1731837760/family_w9o50f.jpg" },
+  { name: "Comedy", image_url: "https://res.cloudinary.com/dtfkb3szp/image/upload/v1731837208/comedy_orz7wh.jpg" },
+  { name: "Romance", image_url: "https://res.cloudinary.com/dtfkb3szp/image/upload/v1731837760/romance_fqcoya.jpg" },
+  { name: "Thriller", image_url: "https://res.cloudinary.com/dtfkb3szp/image/upload/v1731837760/thriller_hythtq.jpg" },
+  { name: "Horror", image_url: "https://res.cloudinary.com/dtfkb3szp/image/upload/v1731837130/scariest-horror-movies-it-stephen-king-2x1-bn-220617-e38851_jpasfs.webp" },
+  { name: "Sci-Fi/Fantasy", image_url: "https://res.cloudinary.com/dtfkb3szp/image/upload/v1731837760/fantasy_brlei9.jpg" },
+  { name: "Animation", image_url: "https://res.cloudinary.com/dtfkb3szp/image/upload/v1731837759/animation_fzfvk1.jpg" },
+  { name: "Musicals", image_url: "https://res.cloudinary.com/dtfkb3szp/image/upload/v1731837760/musicals_lzcgzq.jpg" },
+]
+
+lists.each do |list_data|
+  list = List.create!(name: list_data[:name])
+
+  # Attaching the image from a Cloudinary URL using Active Storage and open-uri
+  file = URI.open(list_data[:image_url])
+  list.photo.attach(io: file, filename: "#{list_data[:name].parameterize}_image.jpg", content_type: 'image/jpg')
+
+  puts "Created list: #{list.name} with an image from Cloudinary"
+end
+
+puts "Seeding complete!"
