@@ -12,7 +12,9 @@ require 'json'
 
 # 1. Clean the database 🗑️
 puts 'Cleaning database...'
+Bookmark.destroy_all
 Movie.destroy_all
+List.destroy_all
 
 # 2. Create the instances 🏗️
 puts 'Creating movies...'
